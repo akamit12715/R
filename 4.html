@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aviator Prediction System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'El Messiri', sans-serif;
+    }
+
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 8s steps(30, end) infinite, blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      0% { width: 0 }
+      50% { width: 100% }
+      100% { width: 0 }
+    }
+
+    .aviator-logo-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .aviator-logo {
+      width: 400px;
+      height: 200px;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body class="bg-cyan-50 text-white">
+
+  <div class="text-center mt-4">
+    <h1 class="text-cyan-500 text-3xl font-bold">
+      <span class="typewriter">RB S1 ULTRA AVAITOR</span>
+    </h1>
+    <p class="text-cyan-400">OWNER : @KINGROCKYBHAI45</p>
+  </div>
+
+  <div class="max-w-md mx-auto mt-4 p-4 bg-white rounded-lg">
+    <div class="mb-4 text-center text-cyan-500 font-bold text-2xl">
+      MAKE BY RB BHAI
+    </div>
+
+    <div class="aviator-logo-container">
+      <div class="aviator-logo">
+        <img src="https://cdn.glitch.global/553ca864-3437-4d2b-b934-95e9a418eb32/Aviator-Logo-Game-Image.png?v=1744275717021" alt="Aviator Logo" class="w-3/4 h-3/4 object-contain">
+      </div>
+    </div>
+
+    <div class="p-4 bg-cyan-100 rounded-lg border border-black mb-4 text-center">
+      <p class="text-black text-lg font-bold">CASH OUT BEFORE</p>
+      <p class="text-black text-xl" id="prediction">WAITING...</p>
+    </div>
+
+    <div class="text-center mb-4">
+      <button onclick="generateAviatorPrediction()" class="bg-cyan-100 text-black px-6 py-2 rounded-lg hover:bg-cyan-100 transition">
+        GENERATE PREDICTION
+      </button>
+    </div>
+
+    <div class="mt-6 text-white">
+      <div class="flex items-center justify-between px-2">
+        <h2 class="text-center font-bold mb-2">HISTORY</h2>
+        <button onclick="clearHistory()" class="flex items-center bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          CLEAR HISTORY
+        </button>
+      </div>
+      <div id="history" class="mt-2"></div>
+    </div>
+  </div>
+
+  <div class="text-center mt-6">
+    <button onclick="history.back()" class="flex items-center justify-center mx-auto bg-black hover:bg-black text-white font-semibold px-5 py-2 rounded-full shadow-lg transition duration-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back
+    </button>
+  </div>
+
+  <script>
+    let historyData = [];
+    let predictionMemory = [];
+
+    function generateAviatorPrediction() {
+      const prediction = smartPrediction();
+      document.getElementById("prediction").innerText = `${prediction.toFixed(2)}x`;
+
+      historyData.unshift({
+        prediction: `${prediction.toFixed(2)}x`
+      });
+
+      predictionMemory.unshift(prediction);
+      if (predictionMemory.length > 10) predictionMemory.pop();
+
+      updateHistory();
+    }
+
+    function smartPrediction() {
+      let chance = Math.random();
+
+      // 70% chance to return solid wins between 2.0x – 10x
+      if (chance < 0.7) {
+        return (Math.random() * 8 + 2); // 2x to 10x
+      }
+
+      // 20% chance for higher multipliers (10x – 30x)
+      if (chance < 0.9) {
+        return (Math.random() * 20 + 10); // 10x to 30x
+      }
+
+      // 10% chance for ultra-high (30x – 100x)
+      return (Math.random() * 70 + 30); // 30x to 100x
+    }
+
+    function updateHistory() {
+      const historyDiv = document.getElementById("history");
+      historyDiv.innerHTML = ""; 
+
+      historyData.forEach(item => {
+        historyDiv.innerHTML += `
+          <div class="border-l-4 border-green-500 bg-gray-900 rounded-md p-3 mb-3 shadow">
+            <div class="flex justify-between items-center">
+              <span class="font-bold">Prediction:</span>
+              <span>${item.prediction}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function clearHistory() {
+      historyData = [];
+      predictionMemory = [];
+      updateHistory();
+    }
+  </script>
+
+</body>
+</html>
